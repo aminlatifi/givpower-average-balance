@@ -14,7 +14,10 @@
     "format": "npm run prettier:fix && npm run lint:fix"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@ethersproject/bignumber": "^5.7.0",
     "antd": "^4.22.7",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -6,12 +6,10 @@ import ClockCircleOutlined from '@ant-design/icons/ClockCircleOutlined';
 import { useState } from 'react';
 
 import config from './config';
-import { calculateAverage } from './lib/calculator';
+import { calculateAverage } from './lib/averageCalculator';
 
 function App() {
   const onFinish = (values: any) => {
-    console.log('Success:', values);
-
     calculateAverage(
       values.env,
       values.walletAddress,
@@ -23,9 +21,7 @@ function App() {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
-  function replaceWithBr() {
-    return result.replace(/\n/g, '<br />');
-  }
+
   const [result, setResult] = useState('');
 
   const { Option } = Select;
@@ -109,8 +105,7 @@ function App() {
         </Form.Item>
       </Form>
 
-      <p dangerouslySetInnerHTML={{__html: replaceWithBr()}} style={{textAlign: 'left'}}/>
-
+      <pre style={{ textAlign: 'left' }}>{result}</pre>
     </div>
   );
 }
