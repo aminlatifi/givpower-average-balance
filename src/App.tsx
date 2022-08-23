@@ -1,28 +1,61 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
 import './App.css';
+import { Button, Form, Input } from 'antd';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const onFinish = (values: any) => {
+    console.log('Success:', values);
+  };
 
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
   return (
     <div className='App'>
-      <div>
-        <a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
-          <img src='/vite.svg' className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://reactjs.org' target='_blank' rel='noreferrer'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
+      <h1>Calculate average GIVpower</h1>
+
+      <Form
+        name='basic'
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete='off'
+      >
+        <Form.Item
+          label='Wallet Address'
+          name='walletAddress'
+          rules={[{ required: true, message: 'Please input Wallet Address!' }]}
+        >
+          <Input style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          label='From Timestamp (seconds)'
+          name='fromTimestamp'
+          rules={[
+            { required: true, message: 'Please input timestamp (seconds) for the start of the period!' },
+          ]}
+        >
+          <Input style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item
+          label='To Timestamp (seconds)'
+          name='toTimestamp'
+          rules={[
+            { required: true, message: 'Please input timestamp (seconds) for the end of the period!' },
+          ]}
+        >
+          <Input style={{ width: '100%' }} />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type='primary' htmlType='submit'>
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
