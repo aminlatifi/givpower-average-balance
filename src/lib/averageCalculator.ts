@@ -1,11 +1,13 @@
 import { ApolloClient, InMemoryCache, gql, from } from '@apollo/client';
-import { BigNumber } from '@ethersproject/bignumber';
+import BigNumber from 'bignumber.js';
 
 interface GivPowerSnapshot {
   cumulativeGivPowerAmount: string;
   givPowerAmount: string;
   timestamp: string;
 }
+
+const toBN = (n: string | number) => new BigNumber(n);
 
 const givpowerSnapshotQuery = `
   query($walletAddress: String, $fromTimestamp: Int, $toTimestamp: Int) {
@@ -26,10 +28,10 @@ const givpowerSnapshotQuery = `
 `;
 
 const getCumulativeGower = (timestamp: number, [lastSnapShot]: GivPowerSnapshot[]): BigNumber => {
-  if (!lastSnapShot) return BigNumber.from(0);
+  if (!lastSnapShot) return toBN(0);
 
-  return BigNumber.from(lastSnapShot.cumulativeGivPowerAmount).add(
-    BigNumber.from(lastSnapShot.givPowerAmount).mul(timestamp - Number(lastSnapShot.timestamp)),
+  return toBN(lastSnapShot.cumulativeGivPowerAmount).plus(
+    toBN(lastSnapShot.givPowerAmount).times(timestamp - Number(lastSnapShot.timestamp)),
   );
 };
 
@@ -69,8 +71,21 @@ export const calculateAverage = async (
   const startCumulativePower = getCumulativeGower(fromTimestamp, beforeStart);
   const endCumulativePower = getCumulativeGower(toTimestamp, beforeEnd);
 
-  return endCumulativePower
-    .sub(startCumulativePower)
-    .div(toTimestamp - fromTimestamp)
-    .toString();
+  const averageGivPower = endCumulativePower
+    .minus(startCumulativePower)
+    .div(toTimestamp - fromTimestamp);
+
+  return `
+    average GIVpower:
+        eth: ${averageGivPower
+          .div(10 ** 18)
+          .decimalPlaces(18, BigNumber.ROUND_DOWN)
+          .toFormat({
+            groupSize: 3,
+            groupSeparator: ',',
+            decimalSeparator: '.',
+          })}
+        wei: ${averageGivPower.toFixed(0)}
+    
+  `;
 };

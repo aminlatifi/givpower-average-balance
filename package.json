@@ -1,5 +1,6 @@
 {
   "name": "givpower-average-balance",
+  "author": "aminlatifi",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -15,8 +16,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
-    "@ethersproject/bignumber": "^5.7.0",
     "antd": "^4.22.7",
+    "bignumber.js": "^9.1.0",
     "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
